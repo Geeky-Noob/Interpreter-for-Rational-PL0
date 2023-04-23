@@ -1,0 +1,13 @@
+Library
+    structure My
+is
+    bigrationalpackage.sml
+    datatypes.sml (* datatypes *)
+    rational.lex  (* Lexer rules. *)
+    rational.yacc:MLYacc (* Parser rules. *)
+    glue.sml 
+    rational.sml (* Lex, parse *)
+    $/basis.cm
+    $/ml-yacc-lib.cm
+    $smlnj/compiler/compiler.cm (* Structure Compiler. *)
+    $/smlnj-lib.cm (* for hashtable *)

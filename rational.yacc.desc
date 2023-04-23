@@ -1,0 +1,2626 @@
+
+state 0:
+
+	start : . block 
+
+	INTEGER	shift 8
+	BOOL	shift 7
+	RATIONAL	shift 6
+
+	start	goto 128
+	block	goto 5
+	dec	goto 4
+	vardecseq	goto 3
+	vardec	goto 2
+	typedec	goto 1
+
+	.	reduce by rule 6
+
+
+state 1:
+
+	vardec : typedec . varlist SEMICOLON 
+
+	ID	shift 10
+
+	varlist	goto 9
+
+	.	error
+
+
+state 2:
+
+	vardecseq : vardec . vardecseq 
+
+	INTEGER	shift 8
+	BOOL	shift 7
+	RATIONAL	shift 6
+
+	vardecseq	goto 11
+	vardec	goto 2
+	typedec	goto 1
+
+	.	reduce by rule 6
+
+
+state 3:
+
+	dec : vardecseq . prodecseq 
+
+	PROCEDURE	shift 14
+
+	prodecseq	goto 13
+	prodec	goto 12
+
+	.	reduce by rule 8
+
+
+state 4:
+
+	block : dec . comseq 
+
+	LBRACE	shift 16
+
+	comseq	goto 15
+
+	.	error
+
+
+state 5:
+
+	start : block .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 6:
+
+	typedec : RATIONAL .  (reduce by rule 13)
+
+
+
+	.	reduce by rule 13
+
+
+state 7:
+
+	typedec : BOOL .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 8:
+
+	typedec : INTEGER .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 9:
+
+	vardec : typedec varlist . SEMICOLON 
+
+	SEMICOLON	shift 17
+
+
+	.	error
+
+
+state 10:
+
+	varlist : ID .  (reduce by rule 15)
+	varlist : ID . COMMA varlist 
+
+	COMMA	shift 18
+
+
+	.	reduce by rule 15
+
+
+state 11:
+
+	vardecseq : vardec vardecseq .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 12:
+
+	prodecseq : prodec . prodecseq 
+
+	PROCEDURE	shift 14
+
+	prodecseq	goto 19
+	prodec	goto 12
+
+	.	reduce by rule 8
+
+
+state 13:
+
+	dec : vardecseq prodecseq .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 14:
+
+	prodec : PROCEDURE . ID block SEMICOLON 
+
+	ID	shift 20
+
+
+	.	error
+
+
+state 15:
+
+	block : dec comseq .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 16:
+
+	comseq : LBRACE . commands RBRACE 
+
+	IF	shift 28
+	WHILE	shift 27
+	PRINT	shift 26
+	READ	shift 25
+	CALL	shift 24
+	ID	shift 23
+
+	commands	goto 22
+	command	goto 21
+
+	.	reduce by rule 3
+
+
+state 17:
+
+	vardec : typedec varlist SEMICOLON .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
+state 18:
+
+	varlist : ID COMMA . varlist 
+
+	ID	shift 10
+
+	varlist	goto 29
+
+	.	error
+
+
+state 19:
+
+	prodecseq : prodec prodecseq .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 20:
+
+	prodec : PROCEDURE ID . block SEMICOLON 
+
+	INTEGER	shift 8
+	BOOL	shift 7
+	RATIONAL	shift 6
+
+	block	goto 30
+	dec	goto 4
+	vardecseq	goto 3
+	vardec	goto 2
+	typedec	goto 1
+
+	.	reduce by rule 6
+
+
+state 21:
+
+	commands : command . SEMICOLON commands 
+
+	SEMICOLON	shift 31
+
+
+	.	error
+
+
+state 22:
+
+	comseq : LBRACE commands . RBRACE 
+
+	RBRACE	shift 32
+
+
+	.	error
+
+
+state 23:
+
+	command : ID . ASSIGN expression 
+
+	ASSIGN	shift 33
+
+
+	.	error
+
+
+state 24:
+
+	command : CALL . ID 
+
+	ID	shift 34
+
+
+	.	error
+
+
+state 25:
+
+	command : READ . LPAREN ID RPAREN 
+
+	LPAREN	shift 35
+
+
+	.	error
+
+
+state 26:
+
+	command : PRINT . LPAREN expression RPAREN 
+
+	LPAREN	shift 36
+
+
+	.	error
+
+
+state 27:
+
+	command : WHILE . expression DO comseq OD 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 37
+
+	.	error
+
+
+state 28:
+
+	command : IF . expression THEN comseq ELSE comseq FI 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 53
+
+	.	error
+
+
+state 29:
+
+	varlist : ID COMMA varlist .  (reduce by rule 16)
+
+
+
+	.	reduce by rule 16
+
+
+state 30:
+
+	prodec : PROCEDURE ID block . SEMICOLON 
+
+	SEMICOLON	shift 54
+
+
+	.	error
+
+
+state 31:
+
+	commands : command SEMICOLON . commands 
+
+	IF	shift 28
+	WHILE	shift 27
+	PRINT	shift 26
+	READ	shift 25
+	CALL	shift 24
+	ID	shift 23
+
+	commands	goto 55
+	command	goto 21
+
+	.	reduce by rule 3
+
+
+state 32:
+
+	comseq : LBRACE commands RBRACE .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 33:
+
+	command : ID ASSIGN . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 56
+
+	.	error
+
+
+state 34:
+
+	command : CALL ID .  (reduce by rule 19)
+
+
+
+	.	reduce by rule 19
+
+
+state 35:
+
+	command : READ LPAREN . ID RPAREN 
+
+	ID	shift 57
+
+
+	.	error
+
+
+state 36:
+
+	command : PRINT LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 58
+
+	.	error
+
+
+state 37:
+
+	command : WHILE expression . DO comseq OD 
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	DO	shift 76
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 38:
+
+	expression : ID .  (reduce by rule 50)
+
+
+
+	.	reduce by rule 50
+
+
+state 39:
+
+	expression : RAT .  (reduce by rule 52)
+
+
+
+	.	reduce by rule 52
+
+
+state 40:
+
+	expression : BIGINT .  (reduce by rule 51)
+
+
+
+	.	reduce by rule 51
+
+
+state 41:
+
+	expression : FALSE .  (reduce by rule 49)
+
+
+
+	.	reduce by rule 49
+
+
+state 42:
+
+	expression : TRUE .  (reduce by rule 48)
+
+
+
+	.	reduce by rule 48
+
+
+state 43:
+
+	expression : NOT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 77
+
+	.	error
+
+
+state 44:
+
+	expression : TO_DECI . LPAREN expression RPAREN 
+
+	LPAREN	shift 78
+
+
+	.	error
+
+
+state 45:
+
+	expression : FROM_DECI . LPAREN expression RPAREN 
+
+	LPAREN	shift 79
+
+
+	.	error
+
+
+state 46:
+
+	expression : SHOW_DECI . LPAREN expression RPAREN 
+
+	LPAREN	shift 80
+
+
+	.	error
+
+
+state 47:
+
+	expression : SHOW_RAT . LPAREN expression RPAREN 
+
+	LPAREN	shift 81
+
+
+	.	error
+
+
+state 48:
+
+	expression : RATI . LPAREN expression RPAREN 
+
+	LPAREN	shift 82
+
+
+	.	error
+
+
+state 49:
+
+	expression : MAKE_RAT . LPAREN expression COMMA expression RPAREN 
+
+	LPAREN	shift 83
+
+
+	.	error
+
+
+state 50:
+
+	expression : INVERSE . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 84
+
+	.	error
+
+
+state 51:
+
+	expression : NEG . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 85
+
+	.	error
+
+
+state 52:
+
+	expression : LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 86
+
+	.	error
+
+
+state 53:
+
+	command : IF expression . THEN comseq ELSE comseq FI 
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	THEN	shift 87
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 54:
+
+	prodec : PROCEDURE ID block SEMICOLON .  (reduce by rule 11)
+
+
+
+	.	reduce by rule 11
+
+
+state 55:
+
+	commands : command SEMICOLON commands .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 56:
+
+	command : ID ASSIGN expression .  (reduce by rule 20)
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	reduce by rule 20
+
+
+state 57:
+
+	command : READ LPAREN ID . RPAREN 
+
+	RPAREN	shift 88
+
+
+	.	error
+
+
+state 58:
+
+	command : PRINT LPAREN expression . RPAREN 
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 89
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 59:
+
+	expression : expression OR . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 90
+
+	.	error
+
+
+state 60:
+
+	expression : expression AND . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 91
+
+	.	error
+
+
+state 61:
+
+	expression : expression DIV_RAT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 92
+
+	.	error
+
+
+state 62:
+
+	expression : expression TIMES_RAT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 93
+
+	.	error
+
+
+state 63:
+
+	expression : expression MINUS_RAT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 94
+
+	.	error
+
+
+state 64:
+
+	expression : expression PLUS_RAT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 95
+
+	.	error
+
+
+state 65:
+
+	expression : expression MOD_INT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 96
+
+	.	error
+
+
+state 66:
+
+	expression : expression DIV_INT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 97
+
+	.	error
+
+
+state 67:
+
+	expression : expression TIMES_INT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 98
+
+	.	error
+
+
+state 68:
+
+	expression : expression MINUS_INT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 99
+
+	.	error
+
+
+state 69:
+
+	expression : expression PLUS_INT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 100
+
+	.	error
+
+
+state 70:
+
+	expression : expression GT_EQ . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 101
+
+	.	error
+
+
+state 71:
+
+	expression : expression GT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 102
+
+	.	error
+
+
+state 72:
+
+	expression : expression EQ . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 103
+
+	.	error
+
+
+state 73:
+
+	expression : expression NOT_EQ . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 104
+
+	.	error
+
+
+state 74:
+
+	expression : expression LT . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 105
+
+	.	error
+
+
+state 75:
+
+	expression : expression LT_EQ . expression 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 106
+
+	.	error
+
+
+state 76:
+
+	command : WHILE expression DO . comseq OD 
+
+	LBRACE	shift 16
+
+	comseq	goto 107
+
+	.	error
+
+
+state 77:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+	expression : NOT expression .  (reduce by rule 53)
+
+
+
+	.	reduce by rule 53
+
+
+state 78:
+
+	expression : TO_DECI LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 108
+
+	.	error
+
+
+state 79:
+
+	expression : FROM_DECI LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 109
+
+	.	error
+
+
+state 80:
+
+	expression : SHOW_DECI LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 110
+
+	.	error
+
+
+state 81:
+
+	expression : SHOW_RAT LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 111
+
+	.	error
+
+
+state 82:
+
+	expression : RATI LPAREN . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 112
+
+	.	error
+
+
+state 83:
+
+	expression : MAKE_RAT LPAREN . expression COMMA expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 113
+
+	.	error
+
+
+state 84:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : INVERSE expression .  (reduce by rule 38)
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+
+
+	.	reduce by rule 38
+
+
+state 85:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+	expression : NEG expression .  (reduce by rule 54)
+
+
+
+	.	reduce by rule 54
+
+
+state 86:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+	expression : LPAREN expression . RPAREN 
+
+	RPAREN	shift 114
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 87:
+
+	command : IF expression THEN . comseq ELSE comseq FI 
+
+	LBRACE	shift 16
+
+	comseq	goto 115
+
+	.	error
+
+
+state 88:
+
+	command : READ LPAREN ID RPAREN .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 89:
+
+	command : PRINT LPAREN expression RPAREN .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 90:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+	expression : expression OR expression .  (reduce by rule 46)
+
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+
+
+	.	reduce by rule 46
+
+
+state 91:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression AND expression .  (reduce by rule 45)
+	expression : expression . OR expression 
+
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 45
+
+
+state 92:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression DIV_RAT expression .  (reduce by rule 37)
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+
+
+	.	reduce by rule 37
+
+
+state 93:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression TIMES_RAT expression .  (reduce by rule 36)
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+
+
+	.	reduce by rule 36
+
+
+state 94:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression MINUS_RAT expression .  (reduce by rule 35)
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 35
+
+
+state 95:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression PLUS_RAT expression .  (reduce by rule 34)
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 34
+
+
+state 96:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression MOD_INT expression .  (reduce by rule 33)
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+
+
+	.	reduce by rule 33
+
+
+state 97:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression DIV_INT expression .  (reduce by rule 32)
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+
+
+	.	reduce by rule 32
+
+
+state 98:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression TIMES_INT expression .  (reduce by rule 31)
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+
+
+	.	reduce by rule 31
+
+
+state 99:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression MINUS_INT expression .  (reduce by rule 30)
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 30
+
+
+state 100:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression PLUS_INT expression .  (reduce by rule 29)
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 29
+
+
+state 101:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression GT_EQ expression .  (reduce by rule 28)
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 28
+
+
+state 102:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression GT expression .  (reduce by rule 27)
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 27
+
+
+state 103:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression EQ expression .  (reduce by rule 25)
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	LT_EQ	shift 75
+	LT	shift 74
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 25
+
+
+state 104:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression NOT_EQ expression .  (reduce by rule 26)
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	LT_EQ	shift 75
+	LT	shift 74
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 26
+
+
+state 105:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression LT expression .  (reduce by rule 24)
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 24
+
+
+state 106:
+
+	expression : expression . LT_EQ expression 
+	expression : expression LT_EQ expression .  (reduce by rule 23)
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+
+
+	.	reduce by rule 23
+
+
+state 107:
+
+	command : WHILE expression DO comseq . OD 
+
+	OD	shift 116
+
+
+	.	error
+
+
+state 108:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : TO_DECI LPAREN expression . RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 117
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 109:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : FROM_DECI LPAREN expression . RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 118
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 110:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : SHOW_DECI LPAREN expression . RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 119
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 111:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : SHOW_RAT LPAREN expression . RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 120
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 112:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : RATI LPAREN expression . RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 121
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 113:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : MAKE_RAT LPAREN expression . COMMA expression RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	COMMA	shift 122
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 114:
+
+	expression : LPAREN expression RPAREN .  (reduce by rule 47)
+
+
+
+	.	reduce by rule 47
+
+
+state 115:
+
+	command : IF expression THEN comseq . ELSE comseq FI 
+
+	ELSE	shift 123
+
+
+	.	error
+
+
+state 116:
+
+	command : WHILE expression DO comseq OD .  (reduce by rule 22)
+
+
+
+	.	reduce by rule 22
+
+
+state 117:
+
+	expression : TO_DECI LPAREN expression RPAREN .  (reduce by rule 44)
+
+
+
+	.	reduce by rule 44
+
+
+state 118:
+
+	expression : FROM_DECI LPAREN expression RPAREN .  (reduce by rule 43)
+
+
+
+	.	reduce by rule 43
+
+
+state 119:
+
+	expression : SHOW_DECI LPAREN expression RPAREN .  (reduce by rule 42)
+
+
+
+	.	reduce by rule 42
+
+
+state 120:
+
+	expression : SHOW_RAT LPAREN expression RPAREN .  (reduce by rule 41)
+
+
+
+	.	reduce by rule 41
+
+
+state 121:
+
+	expression : RATI LPAREN expression RPAREN .  (reduce by rule 40)
+
+
+
+	.	reduce by rule 40
+
+
+state 122:
+
+	expression : MAKE_RAT LPAREN expression COMMA . expression RPAREN 
+
+	LPAREN	shift 52
+	NEG	shift 51
+	INVERSE	shift 50
+	MAKE_RAT	shift 49
+	RATI	shift 48
+	SHOW_RAT	shift 47
+	SHOW_DECI	shift 46
+	FROM_DECI	shift 45
+	TO_DECI	shift 44
+	NOT	shift 43
+	TRUE	shift 42
+	FALSE	shift 41
+	BIGINT	shift 40
+	RAT	shift 39
+	ID	shift 38
+
+	expression	goto 124
+
+	.	error
+
+
+state 123:
+
+	command : IF expression THEN comseq ELSE . comseq FI 
+
+	LBRACE	shift 16
+
+	comseq	goto 125
+
+	.	error
+
+
+state 124:
+
+	expression : expression . LT_EQ expression 
+	expression : expression . LT expression 
+	expression : expression . EQ expression 
+	expression : expression . NOT_EQ expression 
+	expression : expression . GT expression 
+	expression : expression . GT_EQ expression 
+	expression : expression . PLUS_INT expression 
+	expression : expression . MINUS_INT expression 
+	expression : expression . TIMES_INT expression 
+	expression : expression . DIV_INT expression 
+	expression : expression . MOD_INT expression 
+	expression : expression . PLUS_RAT expression 
+	expression : expression . MINUS_RAT expression 
+	expression : expression . TIMES_RAT expression 
+	expression : expression . DIV_RAT expression 
+	expression : MAKE_RAT LPAREN expression COMMA expression . RPAREN 
+	expression : expression . AND expression 
+	expression : expression . OR expression 
+
+	RPAREN	shift 126
+	LT_EQ	shift 75
+	LT	shift 74
+	NOT_EQ	shift 73
+	EQ	shift 72
+	GT	shift 71
+	GT_EQ	shift 70
+	PLUS_INT	shift 69
+	MINUS_INT	shift 68
+	TIMES_INT	shift 67
+	DIV_INT	shift 66
+	MOD_INT	shift 65
+	PLUS_RAT	shift 64
+	MINUS_RAT	shift 63
+	TIMES_RAT	shift 62
+	DIV_RAT	shift 61
+	AND	shift 60
+	OR	shift 59
+
+
+	.	error
+
+
+state 125:
+
+	command : IF expression THEN comseq ELSE comseq . FI 
+
+	FI	shift 127
+
+
+	.	error
+
+
+state 126:
+
+	expression : MAKE_RAT LPAREN expression COMMA expression RPAREN .  (reduce by rule 39)
+
+
+
+	.	reduce by rule 39
+
+
+state 127:
+
+	command : IF expression THEN comseq ELSE comseq FI .  (reduce by rule 21)
+
+
+
+	.	reduce by rule 21
+
+
+state 128:
+
+
+	EOF	accept
+
+
+	.	error
+
+377 of 988 action table entries left after compaction
+60 goto table entries
